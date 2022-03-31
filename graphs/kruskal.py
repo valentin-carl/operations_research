@@ -1,11 +1,19 @@
 import numpy as np
 
-class Node:
-	next_id = 0
-	
+class Id:
 	def __init__(self):
-		self.id = chr(next_id+97)
-		next_id += 1
+		self.id = 0
+
+	def get_id(self) -> int:
+		res = self.id
+		self.id += 1
+		return res
+
+node_id = Id()
+
+class Node:
+	def __init__(self):
+		self.id = chr(node_id.get_id()+97)
 		self.edges = []
 
 class Edge:
@@ -38,7 +46,6 @@ class Graph:
 			temp = mst[:]
 			temp.append(potential_edge)
 			creates_circle = self.is_cyclic(potential_edge.n1, set())	
-
 			# add edge to MST
 			if not creates_circle:
 				mst.append(potential_edge)
@@ -64,11 +71,11 @@ class Graph:
 		# if reached => end of DFS and no circle found
 		return False
 
-	def print(self) -> None:
+	def print(self):
 		print(self.nodes)
 		print(self.edges)
 
-	def generate(matrix: np.array()) -> Graph:
+	def generate(matrix):
 		"""
 		the input matrix should have the following form:
 		   a   b   c   d
@@ -84,6 +91,17 @@ class Graph:
 		# create nodes list
 		nodes = []
 		for i in range(0, matrix.shape[0]):
-			nodes.add(Node())
+			nodes.append(Node())
 		
-		# TODO
+		# create edges list
+		edges = []
+		for i in range(matrix.shape[0]):
+			for j in range(len(matrix[i])):
+				if matrix[i][j] <= 0:
+					pass
+				else:
+					e = Edge(nodes[i], nodes[j], matrix[i][j])
+					edges.append(e)
+
+		g = Graph(nodes, edges)
+		return g
