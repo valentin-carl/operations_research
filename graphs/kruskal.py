@@ -33,14 +33,14 @@ class Graph:
 		sorted_edges = []
 		for edge in self.edges:
 			index = 0
-			while index < len(sorted_edges) and edge.weight > sorted_edges[index]:
+			while index < len(sorted_edges) and edge.weight > sorted_edges[index].weight:
 				index += 1
 			sorted_edges.insert(index, edge)
 
 		mst = [] # list of edges that will make up the MST
 		nodes = set() # set of nodes in MST
 		while len(nodes) < len(self.nodes):
-			potential_edge = sorted_edge[0]
+			potential_edge = sorted_edges[0]
 			
 			# check if adding that edge would create a circle
 			temp = mst[:]
@@ -105,3 +105,13 @@ class Graph:
 
 		g = Graph(nodes, edges)
 		return g
+
+matrix = np.array([[0,5,1,1,0,0,0],
+                   [5,0,0,2,1,0,0],
+                   [1,0,0,2,0,3,0],
+                   [1,2,2,0,3,2,4],
+                   [0,1,0,3,0,0,4],
+                   [0,0,3,2,0,0,1],
+                   [0,0,0,4,4,1,0]])
+g = Graph.generate(matrix)
+print(g.MST())
